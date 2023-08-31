@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Registration</h1>
+        <form id="registrationForm" onsubmit="return registerUser()">
+            <label for="newUsername">Username:</label>
+            <input type="text" id="newUsername" required>
+            <label for="newPassword">Password:</label>
+            <input type="password" id="newPassword" required>
+            <button class="register-btn" type="submit">Register</button>
+        </form>
+        <p id="registrationMessage"></p>
+    </div>
+
+
+
+    <script>
+        let users = [];
+
+        function registerUser() {
+            const newUsername = document.getElementById("newUsername").value;
+            const newPassword = document.getElementById("newPassword").value;
+
+            const existingUser = users.find(user => user.username === newUsername);
+
+            if (existingUser) {
+                document.getElementById("registrationMessage").innerText = "Username already exists. Please choose a different username.";
+            } else {
+                users.push({ username: newUsername, password: newPassword });
+                document.getElementById("registrationMessage").innerText = "Registration successful! You can now login.";
+
+                alert("Welcome, " + newUsername + "!");
+
+                document.getElementById("newUsername").value = "";
+                document.getElementById("newPassword").value = "";
+
+                window.location.href = "inventory.html";
+            }
+
+            return false;
+        }
+
+
+
+    </script>
+</body>
+
+</html>

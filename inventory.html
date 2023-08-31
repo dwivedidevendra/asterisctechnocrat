@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Inventory System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: black;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 400px;
+            margin: 180px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 30px;
+            margin-left: -8px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+
+        button:hover{
+            background-color: #45a049;
+        }
+
+        .logout-btn {
+            background-color: red;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            border-bottom: 1px solid #ccc;
+            color: #fff;
+        }
+
+        th:last-child,
+        td:last-child {
+            text-align: center;
+        }
+
+        .delete-btn {
+            background-color: #e53935;
+        }
+
+        .delete-btn:hover{
+            background-color: red;
+        }
+
+        .logout-btn:hover {
+            background-color: #e53935;
+            /* Change the background color on hover for the logout button */
+        }
+
+        /* tr {
+            background-color: #f2f2f2;
+            margin-top: 2px;
+        } */
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Inventory System</h1>
+        <form id="productForm">
+            <label for="productName">Product Name:</label>
+            <input type="text" id="productName" placeholder="Enter Product" required>
+            <label for="productQuantity">Quantity:</label>
+            <input type="number" id="productQuantity" placeholder="Enter Quantity" required>
+            <button type="button" onclick="addProduct()">Add Product</button>
+            <a href="index.html"><button type="button" class="logout-btn" onclick="logout()">Logout</button></a>
+        </form>
+        <table id="productTable">
+            <tr>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th></th>
+            </tr>
+        </table>
+    </div>
+
+
+    <script>
+        let inventory = [];
+
+        function addProduct() {
+            const productName = document.getElementById("productName").value;
+            const productQuantity = parseInt(document.getElementById("productQuantity").value);
+
+            if (productName && !isNaN(productQuantity) && productQuantity >= 0) {
+                const product = { name: productName, quantity: productQuantity };
+                inventory.push(product);
+                updateTable();
+                clearForm();
+            }
+        }
+
+        function deleteProduct(index) {
+            inventory.splice(index, 1);
+            updateTable();
+        }
+
+        function updateProduct(index) {
+            const newQuantity = prompt("Enter the new quantity:");
+            const parsedQuantity = parseInt(newQuantity);
+
+            if (!isNaN(parsedQuantity) && parsedQuantity >= 0) {
+                inventory[index].quantity = parsedQuantity;
+                updateTable();
+            }
+        }
+
+        function updateTable() {
+            const table = document.getElementById("productTable");
+            table.innerHTML = `
+        <tr>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th></th>
+        </tr>
+    `;
+
+            inventory.forEach((product, index) => {
+                const row = table.insertRow();
+                row.innerHTML = `
+            <td>${product.name}</td>
+            <td>${product.quantity}</td>
+            <td>
+                <button onclick="updateProduct(${index})">Update</button>
+                <button class="delete-btn" onclick="deleteProduct(${index})">Delete</button>
+                
+            </td>
+        `;
+            });
+        }
+
+        function clearForm() {
+            document.getElementById("productName").value = "";
+            document.getElementById("productQuantity").value = "";
+        }
+
+        updateTable();
+
+    </script>
+</body>
+
+</html>
